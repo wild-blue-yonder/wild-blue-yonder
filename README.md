@@ -1,10 +1,10 @@
-# Package name
+# Wild Blue Yonder
 Package Name
 <pre>
-  pip install independent-machine
+  pip install wild-blue-yonder
 </pre>
 Then:
 ```Python
   # Python
-  import independent_machine
+  import wild_blue_yonder
 ```
