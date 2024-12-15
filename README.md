@@ -6,5 +6,5 @@ Package Name
 Then:
 ```Python
   # Python
-  import wild_blue_yonder
+  import wild_blue_yonder as wby
 ```
