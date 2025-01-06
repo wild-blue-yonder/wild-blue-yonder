@@ -50,7 +50,7 @@ class GRQ():
         return wrapper
 
     @_check_rate_limit
-    def chat(self, messages, **kwargs):
+    def _send(self, messages, **kwargs):
         """A simple requests call to Groq chat completions endpoint.
                 kwargs:
                     temperature     = 0 to 1.0
@@ -110,8 +110,30 @@ class GRQ():
         self.RemainingRequests      = int(rh['x-ratelimit-remaining-requests'])  # Requests Per Day (RPD)
         self.LimitTokens            = int(rh['x-ratelimit-limit-tokens']) # Tokens Per Minute (TPM)
         self.RemainingTokens        = int(rh['x-ratelimit-remaining-tokens']) # Tokens Per Minute (TPM)
-        self.ResetRequests          = int(rh['x-ratelimit-reset-requests'].replace('s', ''))  # Requests Per Day (RPD)
-        self.ResetTokens            = int(rh['x-ratelimit-reset-tokens'].replace('ms', '')) # Tokens Per Minute (TPM)
+        # self.ResetRequests          = int(rh['x-ratelimit-reset-requests'].replace('s', ''))  # Requests Per Day (RPD)
+        # self.ResetTokens            = int(rh['x-ratelimit-reset-tokens'].replace('ms', '')) # Tokens Per Minute (TPM)
+
+    def text_and_image_url(self, messages, text: str, image_url, **kwargs):
+        """"""
+        message = {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": text,
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {"url": image_url,},
+                },
+            ],
+        }
+        kwargs = {
+            'model': 'llama-3.2-90b-vision-preview', # 'llama-3.2-11b-vision-preview'
+            'max_tokens': 100
+        }
+        messages.append(message)
+        return self._send(messages, **kwargs)
 
     def yes_no(self, text: str, instructions: str = None, ):
         """
